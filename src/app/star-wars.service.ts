@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class StarWarsService {
@@ -8,8 +10,26 @@ export class StarWarsService {
     { name: 'Darth Vader', side: 'dark' },
     { name: 'Yoda', side: 'light' }
   ];
-
   charactersChanged = new Subject<void>();
+  http: HttpClient;
+
+  constructor(http: HttpClient) {
+    this.http = http;
+  }
+
+  fetchCharacters() {
+    this.http
+      .get('https://swapi.co/api/people/')
+      .map(data => {
+        return data['results'].map(char => {
+          return { name: char.name, side: '' };
+        });
+      })
+      .subscribe(characters => {
+        this.characters = characters;
+        this.charactersChanged.next();
+      });
+  }
 
   getCharacters(chosenList) {
     if (chosenList === 'all') {

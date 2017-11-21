@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { NgModule } from '@angular/core';
 
@@ -11,30 +10,12 @@ import { ItemComponent } from './item/item.component';
 import { StarWarsService } from './star-wars.service';
 import { CreateCharacterComponent } from './create-character/create-character.component';
 import { HeaderComponent } from './header/header.component';
-
-const routes: Routes = [
-  {
-    path: 'characters',
-    component: TabsComponent,
-    children: [
-      { path: '', redirectTo: 'all', pathMatch: 'full' },
-      { path: ':side', component: ListComponent }
-    ]
-  },
-  { path: 'new-character', component: CreateCharacterComponent },
-  { path: '**', redirectTo: 'characters' } // catch-all route
-];
+import { AppRoutingModule } from './app-routing.module';
+import { CreateCharacterModule } from './create-character/create-character.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ListComponent,
-    TabsComponent,
-    ItemComponent,
-    CreateCharacterComponent,
-    HeaderComponent
-  ],
-  imports: [BrowserModule, FormsModule, RouterModule.forRoot(routes)],
+  declarations: [AppComponent, ListComponent, TabsComponent, ItemComponent, HeaderComponent],
+  imports: [BrowserModule, HttpClientModule, AppRoutingModule, CreateCharacterModule],
   providers: [StarWarsService],
   bootstrap: [AppComponent]
 })
