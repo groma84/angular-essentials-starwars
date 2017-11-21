@@ -13,9 +13,16 @@ import { CreateCharacterComponent } from './create-character/create-character.co
 import { HeaderComponent } from './header/header.component';
 
 const routes: Routes = [
-  { path: '', component: TabsComponent },
+  {
+    path: 'characters',
+    component: TabsComponent,
+    children: [
+      { path: '', redirectTo: 'all', pathMatch: 'full' },
+      { path: ':side', component: ListComponent }
+    ]
+  },
   { path: 'new-character', component: CreateCharacterComponent },
-  { path: '**', redirectTo: '' } // catch-all route
+  { path: '**', redirectTo: 'characters' } // catch-all route
 ];
 
 @NgModule({
