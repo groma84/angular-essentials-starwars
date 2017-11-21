@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class StarWarsService {
@@ -7,6 +8,8 @@ export class StarWarsService {
     { name: 'Darth Vader', side: 'dark' },
     { name: 'Yoda', side: 'light' }
   ];
+
+  charactersChanged = new Subject<void>();
 
   getCharacters(chosenList) {
     if (chosenList === 'all') {
@@ -24,6 +27,7 @@ export class StarWarsService {
     });
 
     this.characters[pos].side = charInfo.side;
+    this.charactersChanged.next();
   }
 
   addCharacter(name, side) {
